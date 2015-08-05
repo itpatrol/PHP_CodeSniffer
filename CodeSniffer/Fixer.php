@@ -41,10 +41,6 @@ class PHP_CodeSniffer_Fixer
     public $enabled = false;
 
     /**
-      * Last line warning or error number.
-      */
-    public $stack_line = false;
-    /**
      * The number of times we have looped over a file.
      *
      * @var int
@@ -538,7 +534,7 @@ class PHP_CodeSniffer_Fixer
 
         $this->_fixedTokens[$stackPtr] = $this->_tokens[$stackPtr];
         $this->_tokens[$stackPtr]      = $content;
-        $this->_currentFile->saveStackChanges($this->stack_line->line, $this->stack_line->column, $content);
+        $this->_currentFile->saveStackChanges($this->_currentFile->stack_line->line, $this->_currentFile->stack_line->column, $content);
         $this->_numFixes++;
 
         if (PHP_CODESNIFFER_VERBOSITY > 1) {

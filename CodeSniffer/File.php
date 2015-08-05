@@ -202,6 +202,12 @@ class PHP_CodeSniffer_File
       * @var array()
       */
     private $_stack = array();
+
+    /**
+      * Last line warning or error number.
+      */
+    public $stack_line = false;
+        
     /**
      * The metrics recorded from PHP_CodeSniffer_Sniffs.
      *
@@ -1138,7 +1144,7 @@ class PHP_CodeSniffer_File
             && $this->fixer->enabled === true
             && $fixable === true
         ) {
-            $this->fixer->stack_line = array( 'line' => $line, 'column' => $column );
+            $this->stack_line = array( 'line' => $line, 'column' => $column );
             @ob_end_clean();
             echo "\tE: [Line $line] $message ($sniffCode)".PHP_EOL;
             ob_start();
@@ -1308,7 +1314,7 @@ class PHP_CodeSniffer_File
             && $this->fixer->enabled === true
             && $fixable === true
         ) {
-            $this->fixer->stack_line = array( 'line' => $line, 'column' => $column );
+            $this->stack_line = array( 'line' => $line, 'column' => $column );
             @ob_end_clean();
             echo "\tW: $message ($sniffCode)".PHP_EOL;
             ob_start();
