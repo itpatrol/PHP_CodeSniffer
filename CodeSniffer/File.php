@@ -1407,11 +1407,11 @@ class PHP_CodeSniffer_File
 
     }//end getErrors()
 
-    public function saveStackChanges($old_content, $new_content){
+    public function saveStackChanges($loop, $old_content, $new_content){
       file_put_contents($this->_file.'.before', $old_content);
       file_put_contents($this->_file.'.after', $new_content);
       exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
-      $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
+      $this->_stack[count($this->_stack) - 1]['changes'][$loop][] = $result;
       unlink($this->_file.'.before');
       unlink($this->_file.'.after');      
     }
