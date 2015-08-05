@@ -41,6 +41,10 @@ class PHP_CodeSniffer_Fixer
     public $enabled = false;
 
     /**
+      * Last line warning or error number.
+      */
+    public $stack_line = false;
+    /**
      * The number of times we have looped over a file.
      *
      * @var int
