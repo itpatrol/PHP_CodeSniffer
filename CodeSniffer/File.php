@@ -1120,14 +1120,6 @@ class PHP_CodeSniffer_File
                                             'severity' => $severity,
                                             'fixable'  => $fixable,
                                            );
-        if (isset($this->_stack[$line]) === false) {
-            $this->_stack[$line] = array();
-        }
-
-        if (isset($this->_stack[$line][$column]) === false) {
-            $this->_stack[$line][$column] = array();
-        }
-
         $this->_stack[] = array(
                           'line'     => $line,
                           'column'   => $column,
