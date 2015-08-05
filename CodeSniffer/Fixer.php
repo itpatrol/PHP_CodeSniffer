@@ -538,6 +538,7 @@ class PHP_CodeSniffer_Fixer
 
         $this->_fixedTokens[$stackPtr] = $this->_tokens[$stackPtr];
         $this->_tokens[$stackPtr]      = $content;
+        $this->_currentFile->saveStackChanges($stack_line->line, $stack_line->column, $content);
         $this->_numFixes++;
 
         if (PHP_CODESNIFFER_VERBOSITY > 1) {

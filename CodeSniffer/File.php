@@ -1418,6 +1418,9 @@ class PHP_CodeSniffer_File
 
     }//end getErrors()
 
+    public function saveStackChanges($line, $column, $changes){
+      $this->_stack[$line][$column]['changes'][] = $changes;
+    }
 
     /**
      * Returns the errors raised from processing this file.
