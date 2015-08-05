@@ -1118,15 +1118,15 @@ class PHP_CodeSniffer_File
                                             'severity' => $severity,
                                             'fixable'  => $fixable,
                                            );
-        if (isset($this->stack[$line]) === false) {
-            $this->stack[$line] = array();
+        if (isset($this->_stack[$line]) === false) {
+            $this->_stack[$line] = array();
         }
 
-        if (isset($this->stack[$line][$column]) === false) {
-            $this->stack[$line][$column] = array();
+        if (isset($this->_stack[$line][$column]) === false) {
+            $this->_stack[$line][$column] = array();
         }
 
-        $this->stack[$line][$column][] = array(
+        $this->_stack[$line][$column][] = array(
                                             'message'  => $message,
                                             'source'   => $sniffCode,
                                             'severity' => $severity,
@@ -1288,15 +1288,15 @@ class PHP_CodeSniffer_File
                                               'fixable'  => $fixable,
                                              );
 
-        if (isset($this->stack[$line]) === false) {
-            $this->stack[$line] = array();
+        if (isset($this->_stack[$line]) === false) {
+            $this->_stack[$line] = array();
         }
 
-        if (isset($this->stack[$line][$column]) === false) {
-            $this->stack[$line][$column] = array();
+        if (isset($this->_stack[$line][$column]) === false) {
+            $this->_stack[$line][$column] = array();
         }
 
-        $this->stack[$line][$column][] = array(
+        $this->_stack[$line][$column][] = array(
                                             'message'  => $message,
                                             'source'   => $sniffCode,
                                             'severity' => $severity,
