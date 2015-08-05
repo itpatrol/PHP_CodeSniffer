@@ -1416,8 +1416,7 @@ class PHP_CodeSniffer_File
     }//end getErrors()
 
     public function saveStackChanges($changes){
-      $last_stack = $this->_stack[count($this->_stack) - 1];
-      $last_stack['changes'][] = $changes;
+      $this->_stack[count($this->_stack) - 1]['changes'][] = $changes;
     }
 
     /**
