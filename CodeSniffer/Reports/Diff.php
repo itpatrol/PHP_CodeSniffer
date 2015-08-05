@@ -82,7 +82,8 @@ class PHP_CodeSniffer_Reports_Diff implements PHP_CodeSniffer_Report
                 $timeTaken = round(($timeTaken / 1000), 2);
                 echo " in $timeTaken secs".PHP_EOL;
             }
-
+        print_r($stack);            
+    
             ob_start();
         }
 
