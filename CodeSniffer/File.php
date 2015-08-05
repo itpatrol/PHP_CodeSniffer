@@ -1096,7 +1096,7 @@ class PHP_CodeSniffer_File
             }
 
             $this->_errors[$line]++;
-            $this->fixer->stack_line = array( 'line' => $line, 'column' => $column );
+            $this->stack_line = array( 'line' => $line, 'column' => $column );
             return true;
         }
 
@@ -1266,7 +1266,7 @@ class PHP_CodeSniffer_File
             }
 
             $this->_warnings[$line]++;
-            $this->fixer->stack_line = array( 'line' => $line, 'column' => $column );
+            $this->stack_line = array( 'line' => $line, 'column' => $column );
             return true;
         }
 
