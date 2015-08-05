@@ -532,7 +532,7 @@ class PHP_CodeSniffer_Fixer
             $this->_oldTokenValues[$stackPtr]['loop'] = $this->loops;
         }//end if
 
-        $this->_currentFile->saveStackChanges($content);
+        $this->_currentFile->saveStackChanges($stackPtr, $content);
         $this->_fixedTokens[$stackPtr] = $this->_tokens[$stackPtr];
         $this->_tokens[$stackPtr]      = $content;
         $this->_numFixes++;
