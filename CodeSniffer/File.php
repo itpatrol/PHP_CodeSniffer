@@ -197,6 +197,12 @@ class PHP_CodeSniffer_File
     private $_warnings = array();
 
     /**
+      * The phpcbf powered messages
+      *
+      * @var array()
+      */
+    private $_stack = array();
+    /**
      * The metrics recorded from PHP_CodeSniffer_Sniffs.
      *
      * @var array()
@@ -1112,11 +1118,26 @@ class PHP_CodeSniffer_File
                                             'severity' => $severity,
                                             'fixable'  => $fixable,
                                            );
+        if (isset($this->stack[$line]) === false) {
+            $this->stack[$line] = array();
+        }
+
+        if (isset($this->stack[$line][$column]) === false) {
+            $this->stack[$line][$column] = array();
+        }
+
+        $this->stack[$line][$column][] = array(
+                                            'message'  => $message,
+                                            'source'   => $sniffCode,
+                                            'severity' => $severity,
+                                            'fixable'  => $fixable,
+                                           );
 
         if (PHP_CODESNIFFER_VERBOSITY > 1
             && $this->fixer->enabled === true
             && $fixable === true
         ) {
+            $this->fixer->stack_line = array( 'line' => $line, 'column' => $column );
             @ob_end_clean();
             echo "\tE: [Line $line] $message ($sniffCode)".PHP_EOL;
             ob_start();
@@ -1267,10 +1288,25 @@ class PHP_CodeSniffer_File
                                               'fixable'  => $fixable,
                                              );
 
+        if (isset($this->stack[$line]) === false) {
+            $this->stack[$line] = array();
+        }
+
+        if (isset($this->stack[$line][$column]) === false) {
+            $this->stack[$line][$column] = array();
+        }
+
+        $this->stack[$line][$column][] = array(
+                                            'message'  => $message,
+                                            'source'   => $sniffCode,
+                                            'severity' => $severity,
+                                            'fixable'  => $fixable,
+                                           );
         if (PHP_CODESNIFFER_VERBOSITY > 1
             && $this->fixer->enabled === true
             && $fixable === true
         ) {
+            $this->fixer->stack_line = array( 'line' => $line, 'column' => $column );
             @ob_end_clean();
             echo "\tW: $message ($sniffCode)".PHP_EOL;
             ob_start();
@@ -1369,6 +1405,18 @@ class PHP_CodeSniffer_File
         return self::$_ignoredLines;
 
     }//end getIgnoredLines()
+
+
+    /**
+     * Returns the errors raised from processing this file.
+     *
+     * @return array
+     */
+    public function getStack()
+    {
+        return $this->_stack;
+
+    }//end getErrors()
 
 
     /**
