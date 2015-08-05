@@ -1426,8 +1426,8 @@ class PHP_CodeSniffer_File
 
     }//end getErrors()
 
-    public function saveStackChanges($line, $column, $changes){
-      $this->_stack[$line][$column]['changes'][] = $changes;
+    public function saveStackChanges($changes){
+      $this->_stack[$this->stack_line['line']][$this->stack_line['column']]['changes'][] = $changes;
     }
 
     /**
