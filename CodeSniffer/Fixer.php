@@ -532,11 +532,14 @@ class PHP_CodeSniffer_Fixer
             $this->_oldTokenValues[$stackPtr]['loop'] = $this->loops;
         }//end if
 
-        $this->_currentFile->saveStackChanges($this->_tokens[$stackPtr], $content);
+        $old_content = $this->getContents();
         $this->_fixedTokens[$stackPtr] = $this->_tokens[$stackPtr];
         $this->_tokens[$stackPtr]      = $content;
         $this->_numFixes++;
-
+        $new_content = $this->getContents();
+        $this->_currentFile->saveStackChanges($old_content, $new_content);
+        
+        
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             $indent = "\t";
             if (empty($this->_changeset) === false) {
