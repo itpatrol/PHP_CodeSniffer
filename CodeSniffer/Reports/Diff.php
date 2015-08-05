@@ -62,7 +62,7 @@ class PHP_CodeSniffer_Reports_Diff implements PHP_CodeSniffer_Report
         if (PHP_CODESNIFFER_CBF === true) {
             ob_end_clean();
             $startTime = microtime(true);
-            echo "\t=> --Fixing file: $errors/$errors violations remaining";
+            echo "\t=> Fixing file: $errors/$errors violations remaining";
         }
 
         $fixed = $phpcsFile->fixer->fixFile();
