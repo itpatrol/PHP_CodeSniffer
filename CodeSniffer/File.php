@@ -197,6 +197,13 @@ class PHP_CodeSniffer_File
     private $_warnings = array();
 
     /**
+      * The phpcbf powered messages
+      *
+      * @var array()
+      */
+    private $_stack = array();
+
+    /**
      * The metrics recorded from PHP_CodeSniffer_Sniffs.
      *
      * @var array()
@@ -1113,6 +1120,17 @@ class PHP_CodeSniffer_File
                                             'fixable'  => $fixable,
                                            );
 
+        $this->_stack[] = array(
+                          'line'     => $line,
+                          'column'   => $column,
+                          'message'  => $message,
+                          'source'   => $sniffCode,
+                          'severity' => $severity,
+                          'fixable'  => $fixable,
+                          'loop'     => $this->fixer->loops,
+                          'type'     => 'error',
+                         );
+
         if (PHP_CODESNIFFER_VERBOSITY > 1
             && $this->fixer->enabled === true
             && $fixable === true
@@ -1267,6 +1285,17 @@ class PHP_CodeSniffer_File
                                               'fixable'  => $fixable,
                                              );
 
+
+        $this->_stack[] = array(
+                          'line'     => $line,
+                          'column'   => $column,
+                          'message'  => $message,
+                          'source'   => $sniffCode,
+                          'severity' => $severity,
+                          'fixable'  => $fixable,
+                          'loop'     => $this->fixer->loops,
+                          'type'     => 'warning',
+                         );
         if (PHP_CODESNIFFER_VERBOSITY > 1
             && $this->fixer->enabled === true
             && $fixable === true
@@ -1370,6 +1399,37 @@ class PHP_CodeSniffer_File
 
     }//end getIgnoredLines()
 
+
+    /**
+     * Returns the stack from processing this file.
+     *
+     * @return array
+     */
+    public function getStack()
+    {
+        return $this->_stack;
+
+    }//end getErrors()
+
+    /**
+     * Clean stack.
+     *
+     */
+    public function cleanStack()
+    {
+        $this->_stack = array();
+
+    }//end getErrors()    
+
+    public function saveStackChanges($old_content, $new_content){
+      file_put_contents($this->_file.'.before', $old_content);
+      file_put_contents($this->_file.'.after', $new_content);
+      exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
+      $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
+      
+      unlink($this->_file.'.before');
+      unlink($this->_file.'.after');      
+    }
 
     /**
      * Returns the errors raised from processing this file.
