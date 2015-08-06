@@ -996,7 +996,6 @@ class PHP_CodeSniffer_File
      */
     private function _addError($error, $line, $column, $code, $data, $severity, $fixable)
     {
-
         if (isset(self::$_ignoredLines[$line]) === true) {
             return false;
         }
@@ -1120,6 +1119,7 @@ class PHP_CodeSniffer_File
                                             'severity' => $severity,
                                             'fixable'  => $fixable,
                                            );
+
         $this->_stack[] = array(
                           'line'     => $line,
                           'column'   => $column,
@@ -1129,7 +1129,7 @@ class PHP_CodeSniffer_File
                           'fixable'  => $fixable,
                           'loop'     => $this->fixer->loops,
                          );
-           
+
         if (PHP_CODESNIFFER_VERBOSITY > 1
             && $this->fixer->enabled === true
             && $fixable === true
