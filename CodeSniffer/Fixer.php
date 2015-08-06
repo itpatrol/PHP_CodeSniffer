@@ -388,6 +388,9 @@ class PHP_CodeSniffer_Fixer
     public function endChangeset()
     {
         if ($this->_inConflict === true) {
+          @ob_end_clean();
+                echo "\t=> Changeset failed to apply".PHP_EOL;
+                ob_start();
             return false;
         }
 
