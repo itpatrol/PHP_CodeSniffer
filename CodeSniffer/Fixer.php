@@ -396,9 +396,18 @@ class PHP_CodeSniffer_Fixer
 
         $this->_inChangeset = false;
 
+          @ob_end_clean();
+                echo "End Charser";
+                ob_start();
+
+
         $success = true;
         $applied = array();
         foreach ($this->_changeset as $stackPtr => $content) {
+          @ob_end_clean();
+                echo "Apply replace ".$stackPtr."\n";
+                ob_start();
+
             $success = $this->replaceToken($stackPtr, $content);
             if ($success === false) {
                 break;
