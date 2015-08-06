@@ -388,26 +388,14 @@ class PHP_CodeSniffer_Fixer
     public function endChangeset()
     {
         if ($this->_inConflict === true) {
-          @ob_end_clean();
-                echo "\t=> Changeset failed to apply".PHP_EOL;
-                ob_start();
             return false;
         }
 
         $this->_inChangeset = false;
 
-          @ob_end_clean();
-                echo "End Charser";
-                ob_start();
-
-
         $success = true;
         $applied = array();
         foreach ($this->_changeset as $stackPtr => $content) {
-          @ob_end_clean();
-                echo "Apply replace ".$stackPtr."\n";
-                ob_start();
-
             $success = $this->replaceToken($stackPtr, $content);
             if ($success === false) {
                 break;
@@ -450,24 +438,6 @@ class PHP_CodeSniffer_Fixer
     public function replaceToken($stackPtr, $content)
     {
         $tokens     = $this->_currentFile->getTokens();
-                        @ob_end_clean();
-        echo "DEBUG: ". print_r($tokens[$stackPtr], true) . $content ."\n";
-         $stack = $this->_currentFile->getStack();
-         print_r($stack[count($stack) - 1]);
-        echo "CONFLICT: " . ($this->_inConflict ? "TRUE" : "FALSE");
-      
-        if ($this->_oldTokenValues[$stackPtr]['prev'] === $content) {
-            echo "SKIPING! The same!";
-        }
-        if($this->_inChangeset === true){
-          echo "SKIPING!";
-        }
-        if (isset($this->_fixedTokens[$stackPtr]) === true) {
-            echo "_fixedTokens!";
-        }
-
-                        ob_start();
-        $old_content = $this->getContents();
 
         if ($this->_inChangeset === false
             && isset($this->_fixedTokens[$stackPtr]) === true
@@ -560,13 +530,12 @@ class PHP_CodeSniffer_Fixer
             $this->_oldTokenValues[$stackPtr]['loop'] = $this->loops;
         }//end if
 
-        
+        $old_content = $this->getContents();
         $this->_fixedTokens[$stackPtr] = $this->_tokens[$stackPtr];
         $this->_tokens[$stackPtr]      = $content;
         $this->_numFixes++;
         $new_content = $this->getContents();
         $this->_currentFile->saveStackChanges($old_content, $new_content);
-        
         
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             $indent = "\t";

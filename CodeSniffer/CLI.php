@@ -134,8 +134,6 @@ class PHP_CodeSniffer_CLI
         $cliValues['showSources']  = false;
         $cliValues['reportFile']   = null;
         $cliValues['reports']      = array();
-        
-        print_r($cliValues);
 
         $suffix = '';
         if (isset($cliValues['suffix']) === true) {

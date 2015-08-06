@@ -59,7 +59,6 @@ class PHP_CodeSniffer_Reports_Cbf implements PHP_CodeSniffer_Report
     ) {
         $cliValues = $phpcsFile->phpcs->cli->getCommandLineValues();
         $errors    = $phpcsFile->getFixableCount();
-
         if ($errors !== 0) {
             if (empty($cliValues['files']) === false) {
                 ob_end_clean();
@@ -105,7 +104,7 @@ class PHP_CodeSniffer_Reports_Cbf implements PHP_CodeSniffer_Report
             file_put_contents($newFilename, $newContent);
 
             if ($newFilename === $report['filename']) {
-                echo "\t=> File was overwritten".PHP_EOL;             
+                echo "\t=> File was overwritten".PHP_EOL;
             } else {
                 echo "\t=> Fixed file written to ".basename($newFilename).PHP_EOL;
             }
