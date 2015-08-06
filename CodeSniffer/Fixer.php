@@ -444,7 +444,9 @@ class PHP_CodeSniffer_Fixer
          print_r($stack[count($stack) - 1]);
         echo "CONFLICT: " . ($this->_inConflict ? "TRUE" : "FALSE");
       
-      
+        if ($this->_oldTokenValues[$stackPtr]['prev'] === $content) {
+            echo "SKIPING! The same!";
+        }
         if($this->_inChangeset === true){
           echo "SKIPING!";
         }
