@@ -996,15 +996,7 @@ class PHP_CodeSniffer_File
      */
     private function _addError($error, $line, $column, $code, $data, $severity, $fixable)
     {
-        $this->_stack[] = array(
-                          'line'     => $line,
-                          'column'   => $column,
-                          'message'  => $message,
-                          'source'   => $sniffCode,
-                          'severity' => $severity,
-                          'fixable'  => $fixable,
-                          'loop'     => $this->fixer->loops,
-                         );
+
         if (isset(self::$_ignoredLines[$line]) === true) {
             return false;
         }
@@ -1128,6 +1120,16 @@ class PHP_CodeSniffer_File
                                             'severity' => $severity,
                                             'fixable'  => $fixable,
                                            );
+        $this->_stack[] = array(
+                          'line'     => $line,
+                          'column'   => $column,
+                          'message'  => $message,
+                          'source'   => $sniffCode,
+                          'severity' => $severity,
+                          'fixable'  => $fixable,
+                          'loop'     => $this->fixer->loops,
+                         );
+           
         if (PHP_CODESNIFFER_VERBOSITY > 1
             && $this->fixer->enabled === true
             && $fixable === true
@@ -1158,15 +1160,6 @@ class PHP_CodeSniffer_File
      */
     private function _addWarning($warning, $line, $column, $code, $data, $severity, $fixable)
     {
-        $this->_stack[] = array(
-                          'line'     => $line,
-                          'column'   => $column,
-                          'message'  => $message,
-                          'source'   => $sniffCode,
-                          'severity' => $severity,
-                          'fixable'  => $fixable,
-                          'loop'     => $this->fixer->loops,
-                         );      
         if (isset(self::$_ignoredLines[$line]) === true) {
             return false;
         }
@@ -1290,6 +1283,17 @@ class PHP_CodeSniffer_File
                                               'severity' => $severity,
                                               'fixable'  => $fixable,
                                              );
+
+
+        $this->_stack[] = array(
+                          'line'     => $line,
+                          'column'   => $column,
+                          'message'  => $message,
+                          'source'   => $sniffCode,
+                          'severity' => $severity,
+                          'fixable'  => $fixable,
+                          'loop'     => $this->fixer->loops,
+                         );
         if (PHP_CODESNIFFER_VERBOSITY > 1
             && $this->fixer->enabled === true
             && $fixable === true
