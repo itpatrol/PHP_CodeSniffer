@@ -444,14 +444,16 @@ class PHP_CodeSniffer_Fixer
          print_r($stack[count($stack) - 1]);
         echo "CONFLICT: " . ($this->_inConflict ? "TRUE" : "FALSE");
       
-        if(isset($this->_fixedTokens[$stackPtr]) === true){
+      
+        if($this->_inChangeset === true){
           echo "SKIPING!";
         }
+        if (isset($this->_fixedTokens[$stackPtr]) === true) {
+            echo "_fixedTokens!";
+        }
+
                         ob_start();
         $old_content = $this->getContents();
-        if ($this->_inConflict === true) {
-            return false;
-        }
 
         if ($this->_inChangeset === false
             && isset($this->_fixedTokens[$stackPtr]) === true
