@@ -1128,6 +1128,7 @@ class PHP_CodeSniffer_File
                           'severity' => $severity,
                           'fixable'  => $fixable,
                           'loop'     => $this->fixer->loops,
+                          'type'     => 'error',
                          );
 
         if (PHP_CODESNIFFER_VERBOSITY > 1
@@ -1293,6 +1294,7 @@ class PHP_CodeSniffer_File
                           'severity' => $severity,
                           'fixable'  => $fixable,
                           'loop'     => $this->fixer->loops,
+                          'type'     => 'warning',
                          );
         if (PHP_CODESNIFFER_VERBOSITY > 1
             && $this->fixer->enabled === true
