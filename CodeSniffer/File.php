@@ -1399,7 +1399,7 @@ class PHP_CodeSniffer_File
 
 
     /**
-     * Returns the errors raised from processing this file.
+     * Returns the stack from processing this file.
      *
      * @return array
      */
@@ -1408,6 +1408,16 @@ class PHP_CodeSniffer_File
         return $this->_stack;
 
     }//end getErrors()
+
+    /**
+     * Clean stack.
+     *
+     */
+    public function cleanStack()
+    {
+        $this->_stack = array();
+
+    }//end getErrors()    
 
     public function saveStackChanges($old_content, $new_content){
       file_put_contents($this->_file.'.before', $old_content);
