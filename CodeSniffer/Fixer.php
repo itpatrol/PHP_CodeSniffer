@@ -538,7 +538,7 @@ class PHP_CodeSniffer_Fixer
         $this->_numFixes++;
         $new_content = $this->getContents();
         $this->_currentFile->saveStackChanges($old_content, $new_content);
-        
+
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             $indent = "\t";
             if (empty($this->_changeset) === false) {
