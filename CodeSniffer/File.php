@@ -579,8 +579,6 @@ class PHP_CodeSniffer_File
                     $startTime = microtime(true);
                     echo "\t\t\tProcessing ".$this->_activeListener.'... ';
                 }
-                
-                $this->fixer->resetTokens($this);
 
                 $ignoreTo = $listeners[$class]->process($this, $stackPtr);
                 if ($ignoreTo !== null) {

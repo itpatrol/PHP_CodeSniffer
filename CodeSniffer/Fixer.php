@@ -142,17 +142,6 @@ class PHP_CodeSniffer_Fixer
 
     }//end startFile()
 
-    public function resetTokens($phpcsFile){
-      $tokens        = $phpcsFile->getTokens();
-      $this->_tokens = array();
-      foreach ($tokens as $index => $token) {
-          if (isset($token['orig_content']) === true) {
-              $this->_tokens[$index] = $token['orig_content'];
-          } else {
-              $this->_tokens[$index] = $token['content'];
-          }
-      }
-    }
 
     /**
      * Attempt to fix the file by processing it until no fixes are made.
