@@ -437,6 +437,7 @@ class PHP_CodeSniffer_Fixer
      */
     public function replaceToken($stackPtr, $content)
     {
+        $old_content = $this->getContents();
         if ($this->_inConflict === true) {
             return false;
         }
@@ -532,7 +533,7 @@ class PHP_CodeSniffer_Fixer
             $this->_oldTokenValues[$stackPtr]['loop'] = $this->loops;
         }//end if
 
-        $old_content = $this->getContents();
+        
         $this->_fixedTokens[$stackPtr] = $this->_tokens[$stackPtr];
         $this->_tokens[$stackPtr]      = $content;
         $this->_numFixes++;
