@@ -1414,7 +1414,7 @@ class PHP_CodeSniffer_File
       file_put_contents($this->_file.'.after', $new_content);
       exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
       ob_end_clean();
-      echo "DIFF result!" . "'".$old_content."' == '".$new_content."'";
+      echo "DIFF result!" ;
       print_r($result);
       ob_start();
       $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
