@@ -442,7 +442,11 @@ class PHP_CodeSniffer_Fixer
         echo "DEBUG: ". print_r($tokens[$stackPtr], true) . $content ."\n";
          $stack = $this->_currentFile->getStack();
          print_r($stack[count($stack) - 1]);
+        echo "CONFLICT: " . ($this->_inConflict ? "TRUE" : "FALSE");
       
+        if(isset($this->_fixedTokens[$stackPtr]) === true){
+          echo "SKIPING!";
+        }
                         ob_start();
         $old_content = $this->getContents();
         if ($this->_inConflict === true) {
