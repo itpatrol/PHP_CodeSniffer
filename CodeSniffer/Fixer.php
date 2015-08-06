@@ -437,6 +437,7 @@ class PHP_CodeSniffer_Fixer
      */
     public function replaceToken($stackPtr, $content)
     {
+        echo "DEBUG: ". print_r($tokens[$stackPtr], true) . $content ."\n";
         $old_content = $this->getContents();
         if ($this->_inConflict === true) {
             return false;
@@ -483,9 +484,6 @@ class PHP_CodeSniffer_Fixer
 
         if ($this->_inChangeset === true) {
             $this->_changeset[$stackPtr] = $content;
-            
-            $new_content = $this->getContents();
-            $this->_currentFile->saveStackChanges($old_content, $new_content);
 
             if (PHP_CODESNIFFER_VERBOSITY > 1) {
                 @ob_end_clean();
