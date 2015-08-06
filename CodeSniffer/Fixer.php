@@ -440,6 +440,9 @@ class PHP_CodeSniffer_Fixer
         $tokens     = $this->_currentFile->getTokens();
                         @ob_end_clean();
         echo "DEBUG: ". print_r($tokens[$stackPtr], true) . $content ."\n";
+         $stack = $this->_currentFile->getStack();
+         print_r($stack[count($stack) - 1]);
+      
                         ob_start();
         $old_content = $this->getContents();
         if ($this->_inConflict === true) {
