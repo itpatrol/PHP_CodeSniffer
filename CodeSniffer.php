@@ -1557,12 +1557,7 @@ class PHP_CodeSniffer
             $extensions[implode('.', $fileParts)] = 1;
             array_shift($fileParts);
         }
-        print_r($fileParts);
-        print_r($extensions);
-        print_r($this->allowedFileExtensions);
         $matches = array_intersect_key($extensions, $this->allowedFileExtensions);
-        echo "matches";
-        print_r($matches);
         if (empty($matches) === true) {
             return false;
         }
