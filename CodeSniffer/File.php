@@ -1422,13 +1422,23 @@ class PHP_CodeSniffer_File
     }//end getErrors()    
 
     public function saveStackChanges($old_content, $new_content){
+      if(PHP_CODESNIFFER_CBF){
+        // We do not compare here. Skip.
+        return;
+      }
       file_put_contents($this->_file.'.before', $old_content);
-      file_put_contents($this->_file.'.after', $new_content);
-      exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
+      file_put_contents($this->_file, $new_content);
+      // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
+      $values = $this->phpcs->cli->getCommandLineValues();
+      $standards = implode(",",$values['standard']);
+      exec('SHA=0000000000000000000000000000000000000000 phpcbf --standard=' . $standards . ' ' . $this->_file);
+      exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file, $result);
       $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
       
+      file_put_contents($this->_file, $new_content);
+      
       unlink($this->_file.'.before');
-      unlink($this->_file.'.after');      
+//      unlink($this->_file.'.after');      
     }
 
     /**
