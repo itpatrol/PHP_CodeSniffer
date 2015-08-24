@@ -470,6 +470,7 @@ class PHP_CodeSniffer_File
           }
           $this->_process_selected_lines = array();
           exec('git annotate -lt ' . $this->_file. "|grep -E '" . $reportSha . "|0000000000000000000000000000000000000000' |awk -F $'\t' '{print$4}'|awk -F\) '{print$1}'", $this->_process_selected_lines);
+          echo 'git annotate -lt ' . $this->_file. "|grep -E '" . $reportSha . "|0000000000000000000000000000000000000000' |awk -F $'\t' '{print$4}'|awk -F\) '{print$1}'";
           print_r($this->_process_selected_lines);
         }
 
