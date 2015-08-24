@@ -1427,6 +1427,7 @@ class PHP_CodeSniffer_File
         return;
       }
       echo "We are here\n";
+      $origin_content = file_get_contents($this->_file);
       file_put_contents($this->_file.'.before', $old_content);
       file_put_contents($this->_file, $new_content);
       // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
@@ -1436,7 +1437,7 @@ class PHP_CodeSniffer_File
       exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file, $result);
       $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
       
-      file_put_contents($this->_file, $new_content);
+      file_put_contents($this->_file, $origin_content);
       
       unlink($this->_file.'.before');
 //      unlink($this->_file.'.after');      
