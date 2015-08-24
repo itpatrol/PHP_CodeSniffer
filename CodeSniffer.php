@@ -1561,6 +1561,8 @@ class PHP_CodeSniffer
         print_r($extensions);
         print_r($this->allowedFileExtensions);
         $matches = array_intersect_key($extensions, $this->allowedFileExtensions);
+        echo "matches";
+        print_r($matches);
         if (empty($matches) === true) {
             return false;
         }
