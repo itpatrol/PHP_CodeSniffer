@@ -1452,6 +1452,7 @@ class PHP_CodeSniffer_File
         exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout);
         exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file  . '.after', $result);
         $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
+        $this->_stack[count($this->_stack) - 1]['debug'][] = array( 'lines' => $lines, 'output' =>  $outout, 'diff' => $result);
       }
       
       unlink($this->_file.'.before');
