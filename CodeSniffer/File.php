@@ -1453,7 +1453,7 @@ class PHP_CodeSniffer_File
       if($this->_file == 'STDIN'){
         return;
       }
-      $origin = file_get_contents($this->_file);
+      //$origin = file_get_contents($this->_file);
       file_put_contents($this->_file.'.before', $old_content);
       file_put_contents($this->_file.'.after', $new_content);
       exec('diff -i --unchanged-line-format="" --new-line-format="%dn," --old-line-format="" ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
@@ -1463,9 +1463,9 @@ class PHP_CodeSniffer_File
         // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
         $values = $this->phpcs->cli->getCommandLineValues();
         $standards = implode(",",$values['standard']);
-        file_put_contents($this->_file.'.after', $origin);
+//        file_put_contents($this->_file.'.after', $origin);
         exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout);
-        file_put_contents($this->_file, $origin);
+        //file_put_contents($this->_file, $origin);
         exec('diff -u ' . $this->_file . '.before ' . $this->_file  . '.after', $result);
         $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
         $this->_stack[count($this->_stack) - 1]['debug'][] = array( 'lines' => $lines, 'output' =>  $outout, 'diff' => $result);
