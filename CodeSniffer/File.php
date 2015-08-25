@@ -1434,6 +1434,11 @@ class PHP_CodeSniffer_File
         echo "We deep, no stack!\n";
         return;
       }
+      
+      if($this->_file == 'STDIN'){
+        return;
+      }
+      
       echo "We are here\n";
       ob_flush();
       $origin_content = file_get_contents($this->_file);
