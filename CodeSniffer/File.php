@@ -1468,7 +1468,7 @@ class PHP_CodeSniffer_File
         //file_put_contents($this->_file, $origin);
         exec('diff -u ' . $this->_file . '.before ' . $this->_file  . '.after', $result);
         $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
-        $this->_stack[count($this->_stack) - 1]['debug'][] = array( 'lines' => $lines, 'output' =>  $outout, 'diff' => $result, 'return_val' => $return_val);
+        $this->_stack[count($this->_stack) - 1]['debug'][] = array( 'lines' => $lines, 'output' =>  $outout, 'diff' => $result, 'return_val' => $return_val, 'before' => sha1($old_content), 'after' => sha1($new_content));
       }
       
       unlink($this->_file.'.before');
