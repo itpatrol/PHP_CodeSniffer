@@ -1440,6 +1440,7 @@ class PHP_CodeSniffer_File
       }
       
       echo "We are here\n";
+      print_r($this->_process_selected_lines);
       ob_flush();
       $origin_content = file_get_contents($this->_file);
       file_put_contents($this->_file.'.before', $old_content);
