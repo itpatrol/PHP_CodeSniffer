@@ -674,6 +674,7 @@ class PHP_CodeSniffer_File
      */
     private function _parse($contents=null)
     {
+        $MyStartTime = microtime(true);
         if ($contents === null && empty($this->_tokens) === false) {
             // File has already been parsed.
             return;
@@ -684,6 +685,8 @@ class PHP_CodeSniffer_File
         if (empty($cliValues['files']) === true) {
             $stdin = true;
         }
+        $MyTimeTaken = (microtime(true) - $MyStartTime);
+        echo "Comandline in $MyTimeTaken seconds".PHP_EOL;
 
         // Determine the tokenizer from the file extension.
         $fileParts = explode('.', $this->_file);
@@ -698,6 +701,9 @@ class PHP_CodeSniffer_File
             // Revert to default.
             $tokenizerClass = 'PHP_CodeSniffer_Tokenizers_'.$this->tokenizerType;
         }
+
+        $MyTimeTaken = (microtime(true) - $MyStartTime);
+        echo "1 in $MyTimeTaken seconds".PHP_EOL;
 
         $tokenizer       = new $tokenizerClass();
         $this->tokenizer = $tokenizer;
@@ -733,6 +739,9 @@ class PHP_CodeSniffer_File
             return;
         }//end try
 
+        $MyTimeTaken = (microtime(true) - $MyStartTime);
+        echo "2 in $MyTimeTaken seconds".PHP_EOL;
+
         $this->numTokens = count($this->_tokens);
 
         // Check for mixed line endings as these can cause tokenizer errors and we
@@ -748,6 +757,10 @@ class PHP_CodeSniffer_File
             $error = 'File has mixed line endings; this may cause incorrect results';
             $this->addWarning($error, 0, 'Internal.LineEndings.Mixed');
         }
+        
+        $MyTimeTaken = (microtime(true) - $MyStartTime);
+        echo "3 in $MyTimeTaken seconds".PHP_EOL;
+        
 
         if (PHP_CODESNIFFER_VERBOSITY > 0 || (PHP_CODESNIFFER_CBF === true && $stdin === false)) {
             if ($this->numTokens === 0) {
