@@ -1550,16 +1550,16 @@ class PHP_CodeSniffer_File
             }
         }
         
-        $dir = getcwd(). "/.cache/" . basename($this->_file);
+        $dir = getcwd(). "/.cache/" ;
         echo "DIR: ". $dir. "\n";
         if(!is_dir($dir)){
           mkdir($dir, 0750, TRUE);
         }
         $sha1 = sha1($string);
         $file = $dir . '/' . $sha1;
-        $tokens = $tokenizer->tokenizeString($string, $eolChar);
         
         if( is_file($file) ){
+          echo "USE cache\n";
           $cache = file_get_contents($file);
           $tokens = unserialize($cache);
           
