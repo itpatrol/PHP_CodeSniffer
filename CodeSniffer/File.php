@@ -1435,7 +1435,8 @@ class PHP_CodeSniffer_File
       // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
       $values = $this->phpcs->cli->getCommandLineValues();
       $standards = implode(",",$values['standard']);
-      exec('DEEP=TRUE SHA=0000000000000000000000000000000000000000 phpcbf --standard=' . $standards . ' ' . $this->_file);
+      exec('DEEP=TRUE SHA=0000000000000000000000000000000000000000 phpcbf --standard=' . $standards . ' ' . $this->_file, $outout);
+      print_r($outout); 
       exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file, $result);
       $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
       
