@@ -1430,6 +1430,7 @@ class PHP_CodeSniffer_File
         return;
       }
       echo "We are here\n";
+      ob_flush();
       $origin_content = file_get_contents($this->_file);
       file_put_contents($this->_file.'.before', $old_content);
       file_put_contents($this->_file, $new_content);
