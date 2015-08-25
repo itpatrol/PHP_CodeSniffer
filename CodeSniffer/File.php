@@ -503,7 +503,6 @@ class PHP_CodeSniffer_File
         foreach ($this->_tokens as $stackPtr => $token) {
             if(!empty($this->_process_selected_lines)){
               if(!in_array($token['line'], $this->_process_selected_lines)){
-                echo " " . $token['line'] . " ";
                 continue;
               }
             }
