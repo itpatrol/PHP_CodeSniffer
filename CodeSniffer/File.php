@@ -470,13 +470,10 @@ class PHP_CodeSniffer_File
           }
           $this->_process_selected_lines = array();
           exec('git annotate -lt ' . $this->_file. "| awk -F$'\t' '{print$1\" \"$4}'|tr ')' ' '|awk '{print$1\" \"$2}' |grep -E '" . $reportSha . "|0000000000000000000000000000000000000000' |awk '{print$2}'", $this->_process_selected_lines);
-          echo 'git annotate -lt ' . $this->_file. "| awk -F$'\t' '{print$1\" \"$4}'|tr ')' ' '|awk '{print$1\" \"$2}' |grep -E '" . $reportSha . "|0000000000000000000000000000000000000000' |awk '{print$2}'";
-          print_r($this->_process_selected_lines);
         }
         
         if($lines  = getenv('LINES')){
           $this->_process_selected_lines = explode(",", $lines);
-          print_r($this->_process_selected_lines);
         }
 
         // If this is standard input, see if a filename was passed in as well.
@@ -1436,7 +1433,6 @@ class PHP_CodeSniffer_File
     public function saveStackChanges($old_content, $new_content){
       if($deep = getenv('DEEP')){
         // We do not compare here. Skip.
-        echo "We deep, no stack!\n";
         return;
       }
       
@@ -1444,13 +1440,9 @@ class PHP_CodeSniffer_File
         return;
       }
       
-      echo "We are here\n";
-      ob_flush();
-      $origin_content = file_get_contents($this->_file);
       file_put_contents($this->_file.'.before', $old_content);
       file_put_contents($this->_file.'.after', $new_content);
       exec('diff -i --unchanged-line-format="" --new-line-format="%dn," --old-line-format="" ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
-      print_r($result);
       
       if(!empty($result[0])){
         $lines = substr($result[0], 0,-1);
@@ -1458,11 +1450,9 @@ class PHP_CodeSniffer_File
         $values = $this->phpcs->cli->getCommandLineValues();
         $standards = implode(",",$values['standard']);
         exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout);
-        print_r($outout); 
         exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file  . '.after', $result);
         $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
       }
-      file_put_contents($this->_file, $origin_content);
       
       unlink($this->_file.'.before');
       unlink($this->_file.'.after');      
