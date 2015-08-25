@@ -455,7 +455,7 @@ class PHP_CodeSniffer_File
         // Reset the ignored lines because lines numbers may have changed
         // if we are fixing this file.
         self::$_ignoredLines = array();
-
+        $MyStartTime = microtime(true);
         try {
             $this->eolChar = self::detectLineEndings($this->_file, $contents);
         } catch (PHP_CodeSniffer_Exception $e) {
@@ -485,7 +485,7 @@ class PHP_CodeSniffer_File
                 $this->_file = $filename;
             }
         }
-        $MyStartTime = microtime(true);
+        
         $this->_parse($contents);
         $MyTimeTaken = (microtime(true) - $MyStartTime);
         echo "PARSE in $MyTimeTaken seconds".PHP_EOL;
