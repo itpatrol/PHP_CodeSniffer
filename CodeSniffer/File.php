@@ -473,6 +473,11 @@ class PHP_CodeSniffer_File
           echo 'git annotate -lt ' . $this->_file. "| awk -F$'\t' '{print$1\" \"$4}'|tr ')' ' '|awk '{print$1\" \"$2}' |grep -E '" . $reportSha . "|0000000000000000000000000000000000000000' |awk '{print$2}'";
           print_r($this->_process_selected_lines);
         }
+        
+        if($lines  = getenv('LINES')){
+          $this->_process_selected_lines = explode(",", $lines);
+          print_r($this->_process_selected_lines);
+        }
 
         // If this is standard input, see if a filename was passed in as well.
         // This is done by including: phpcs_input_file: [file path]
@@ -1444,16 +1449,19 @@ class PHP_CodeSniffer_File
       $origin_content = file_get_contents($this->_file);
       file_put_contents($this->_file.'.before', $old_content);
       file_put_contents($this->_file.'.after', $new_content);
-      exec('diff -i --unchanged-line-format="" --new-line-format="%dn:" --old-line-format="" ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
+      exec('diff -i --unchanged-line-format="" --new-line-format="%dn," --old-line-format="" ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
       print_r($result);
-      // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
-      $values = $this->phpcs->cli->getCommandLineValues();
-      $standards = implode(",",$values['standard']);
-      exec('DEEP=TRUE SHA=0000000000000000000000000000000000000000 phpcbf --standard=' . $standards . ' ' . $this->_file, $outout);
-      print_r($outout); 
-      exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file, $result);
-      $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
       
+      if(!empty($result[0])){
+        $lines = substr($result[0], 0,-1);
+        // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
+        $values = $this->phpcs->cli->getCommandLineValues();
+        $standards = implode(",",$values['standard']);
+        exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file, $outout);
+        print_r($outout); 
+        exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file, $result);
+        $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
+      }
       file_put_contents($this->_file, $origin_content);
       
       unlink($this->_file.'.before');
