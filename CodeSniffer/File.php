@@ -708,8 +708,12 @@ class PHP_CodeSniffer_File
         $tokenizer       = new $tokenizerClass();
         $this->tokenizer = $tokenizer;
 
+        echo "1.1 in ".(microtime(true) - $MyStartTime)." seconds".PHP_EOL;
+
         if ($contents === null) {
             $contents = file_get_contents($this->_file);
+        echo "1.2 in ".(microtime(true) - $MyStartTime)." seconds".PHP_EOL;
+
         }
 
         try {
@@ -727,6 +731,8 @@ class PHP_CodeSniffer_File
             }
 
             $this->_tokens = self::tokenizeString($contents, $tokenizer, $this->eolChar, $tabWidth, $encoding);
+        echo "1.3 in ".(microtime(true) - $MyStartTime)." seconds".PHP_EOL;
+            
         } catch (PHP_CodeSniffer_Exception $e) {
             $this->addWarning($e->getMessage(), null, 'Internal.Tokenizer.Exception');
             if (PHP_CODESNIFFER_VERBOSITY > 0 || (PHP_CODESNIFFER_CBF === true && $stdin === false)) {
