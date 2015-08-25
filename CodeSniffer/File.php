@@ -1443,7 +1443,9 @@ class PHP_CodeSniffer_File
       ob_flush();
       $origin_content = file_get_contents($this->_file);
       file_put_contents($this->_file.'.before', $old_content);
-      file_put_contents($this->_file, $new_content);
+      file_put_contents($this->_file.'.after', $new_content);
+      exec('diff -i --unchanged-line-format="" --new-line-format="%dn:" --old-line-format="" ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
+      print_r($result);
       // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
       $values = $this->phpcs->cli->getCommandLineValues();
       $standards = implode(",",$values['standard']);
