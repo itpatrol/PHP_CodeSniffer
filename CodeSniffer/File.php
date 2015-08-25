@@ -1438,7 +1438,7 @@ class PHP_CodeSniffer_File
 
       file_put_contents($this->_file.'.before', $old_content);
       file_put_contents($this->_file.'.after', $new_content);
-      exec('diff -u -U 1' . $this->_file . '.before ' . $this->_file  . '.after', $result);
+      exec('diff -u -U 1 ' . $this->_file . '.before ' . $this->_file  . '.after', $result);
       $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
       
       unlink($this->_file.'.before');
