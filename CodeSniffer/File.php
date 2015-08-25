@@ -1428,14 +1428,13 @@ class PHP_CodeSniffer_File
 
     }//end getErrors()    
 
-    public function saveStackChanges($old_content, $new_content, $token){
+    public function saveStackChanges($old_content, $new_content){
       if($deep = getenv('DEEP')){
         // We do not compare here. Skip.
         echo "We deep, no stack!\n";
         return;
       }
       echo "We are here\n";
-      print_r($token);
       ob_flush();
       $origin_content = file_get_contents($this->_file);
       file_put_contents($this->_file.'.before', $old_content);
