@@ -1426,6 +1426,7 @@ class PHP_CodeSniffer_File
     public function saveStackChanges($old_content, $new_content){
       if($deep = getenv('DEEP')){
         // We do not compare here. Skip.
+        echo "We deep, no stack!\n";
         return;
       }
       echo "We are here\n";
