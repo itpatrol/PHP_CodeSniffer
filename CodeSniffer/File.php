@@ -473,7 +473,7 @@ class PHP_CodeSniffer_File
         }
         
         if($lines  = getenv('LINES')){
-//          $this->_process_selected_lines = explode(",", $lines);
+          $this->_process_selected_lines = explode(",", $lines);
         }
 
         // If this is standard input, see if a filename was passed in as well.
