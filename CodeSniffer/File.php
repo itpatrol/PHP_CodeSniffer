@@ -1557,6 +1557,8 @@ class PHP_CodeSniffer_File
         }
         $sha1 = sha1($string);
         $file = $dir . '/' . $sha1;
+        $tokens = $tokenizer->tokenizeString($string, $eolChar);
+        /*
         if( is_file($file) ){
           $cache = file_get_contents($file);
           $tokens = unserialize($cache);
@@ -1565,7 +1567,7 @@ class PHP_CodeSniffer_File
           $tokens = $tokenizer->tokenizeString($string, $eolChar);
           file_put_contents($file, serialize($tokens));
 
-        }
+        }*/
 
         if ($tabWidth === null) {
             $tabWidth = PHP_CODESNIFFER_TAB_WIDTH;
