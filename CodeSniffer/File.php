@@ -485,9 +485,13 @@ class PHP_CodeSniffer_File
                 $this->_file = $filename;
             }
         }
-
+        $MyStartTime = microtime(true);
         $this->_parse($contents);
+        $MyTimeTaken = (microtime(true) - $MyStartTime);
+        echo "PARSE in $MyTimeTaken seconds".PHP_EOL;
         $this->fixer->startFile($this);
+        $MyTimeTaken = (microtime(true) - $MyStartTime);
+        echo "StartFile in $MyTimeTaken seconds".PHP_EOL;
 
         if (PHP_CODESNIFFER_VERBOSITY > 2) {
             echo "\t*** START TOKEN PROCESSING ***".PHP_EOL;
@@ -497,6 +501,9 @@ class PHP_CodeSniffer_File
         $listeners        = $this->phpcs->getSniffs();
         $listenerIgnoreTo = array();
         $inTests          = defined('PHP_CODESNIFFER_IN_TESTS');
+
+        $MyTimeTaken = (microtime(true) - $MyStartTime);
+        echo "getSniffs in $MyTimeTaken seconds".PHP_EOL;
 
         // Foreach of the listeners that have registered to listen for this
         // token, get them to process it.
@@ -1440,7 +1447,6 @@ class PHP_CodeSniffer_File
       }
       
       echo "We are here\n";
-      print_r($this->_process_selected_lines);
       ob_flush();
       $origin_content = file_get_contents($this->_file);
       file_put_contents($this->_file.'.before', $old_content);
