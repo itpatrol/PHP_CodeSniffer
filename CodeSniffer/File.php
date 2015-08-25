@@ -1531,8 +1531,6 @@ class PHP_CodeSniffer_File
             $encoding = PHP_CODESNIFFER_ENCODING;
         }
 
-        echo "Tokens in ".(microtime(true) - $startTime)." microsec".PHP_EOL;
-
         self::_createPositionMap($tokens, $tokenizer, $eolChar, $encoding, $tabWidth);
         self::_createTokenMap($tokens, $tokenizer, $eolChar);
         self::_createParenthesisNestingMap($tokens, $tokenizer, $eolChar);
@@ -1542,8 +1540,6 @@ class PHP_CodeSniffer_File
 
         // Allow the tokenizer to do additional processing if required.
         $tokenizer->processAdditional($tokens, $eolChar);
-        
-        file_put_contents($file, serialize($tokens));
 
         return $tokens;
 
