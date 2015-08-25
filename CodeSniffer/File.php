@@ -1548,8 +1548,22 @@ class PHP_CodeSniffer_File
                 throw new PHP_CodeSniffer_Exception('File appears to be minified and cannot be processed');
             }
         }
+        
+        $dir = getcwd(). ".cache";
+        echo "DIR: ". $dir. "\n";
+        if(!is_dir($dir)){
+          mkdir($dir);
+        }
+        $sha1 = sha1($string);
+        $file = $dir . '/' . $sha1;
+        if( is_file($file) ){
+          $cache = file_get_contents($file);
+          $tokens = unserialize($cache);
+        }else{
+          $tokens = $tokenizer->tokenizeString($string, $eolChar);
+          file_put_contents($file, serialize($tokens));
 
-        $tokens = $tokenizer->tokenizeString($string, $eolChar);
+        }
 
         if ($tabWidth === null) {
             $tabWidth = PHP_CODESNIFFER_TAB_WIDTH;
