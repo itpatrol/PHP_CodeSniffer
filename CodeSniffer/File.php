@@ -1460,17 +1460,11 @@ class PHP_CodeSniffer_File
       
       if(!empty($result[0])){
         $lines = substr($result[0], 0,-1);
-        $newlines=array();
-        $lines = explode(",", $lines);
-        foreach($lines as $line){
-          $newlines[] = $line -1;
-        }
-        $newlines = implode(",", $newlines);
         // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
         $values = $this->phpcs->cli->getCommandLineValues();
         $standards = implode(",",$values['standard']);
 //        file_put_contents($this->_file.'.after', $origin);
-        exec('DEEP=TRUE LINES='.$newlines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout);
+        exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout);
         //file_put_contents($this->_file, $origin);
         exec('diff -u ' . $this->_file . '.before ' . $this->_file  . '.after', $result);
         $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
