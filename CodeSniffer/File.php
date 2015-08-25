@@ -614,10 +614,10 @@ class PHP_CodeSniffer_File
 
                 $this->_activeListener = '';
             }//end foreach
-            $MyTimeTaken = (microtime(true) - $MyStartTime);
-            echo "Process Listeners in $MyTimeTaken seconds".PHP_EOL;
 
         }//end foreach
+            $MyTimeTaken = (microtime(true) - $MyStartTime);
+            echo "Process tokens in $MyTimeTaken seconds".PHP_EOL;
 
         if ($this->_recordErrors === false) {
             $this->_errors   = array();
