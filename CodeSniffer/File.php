@@ -471,10 +471,6 @@ class PHP_CodeSniffer_File
           $this->_process_selected_lines = array();
           exec('git annotate -lt ' . $this->_file. "| awk -F$'\t' '{print$1\" \"$4}'|tr ')' ' '|awk '{print$1\" \"$2}' |grep -E '" . $reportSha . "|0000000000000000000000000000000000000000' |awk '{print$2}'", $this->_process_selected_lines);
         }
-        
-        if($lines  = getenv('LINES')){
-          $this->_process_selected_lines = explode(",", $lines);
-        }
 
         // If this is standard input, see if a filename was passed in as well.
         // This is done by including: phpcs_input_file: [file path]
@@ -1014,13 +1010,6 @@ class PHP_CodeSniffer_File
             return false;
           }
         }
-        
-        if($lines  = getenv('LINES')){
-          $lines = explode(",", $lines);
-          if(!in_array($line, $lines)){
-            return false;
-          }
-        }
 
         // Work out which sniff generated the error.
         if (substr($code, 0, 9) === 'Internal.') {
@@ -1186,13 +1175,6 @@ class PHP_CodeSniffer_File
             return false;
           }
         }
-
-        if($lines  = getenv('LINES')){
-          $lines = explode(",", $lines);
-          if(!in_array($line, $lines)){
-            return false;
-          }
-        }        
 
         // Work out which sniff generated the warning.
         if (substr($code, 0, 9) === 'Internal.') {
@@ -1445,33 +1427,19 @@ class PHP_CodeSniffer_File
     }//end getErrors()    
 
     public function saveStackChanges($old_content, $new_content){
-      if($deep = getenv('DEEP')){
-        // We do not compare here. Skip.
-        return;
-      }
-      
+
       if($this->_file == 'STDIN'){
         return;
       }
-      //$origin = file_get_contents($this->_file);
+      
+      if(getenv('NODIFF')){
+        return;
+      }
+
       file_put_contents($this->_file.'.before', $old_content);
       file_put_contents($this->_file.'.after', $new_content);
-      exec('diff -i --unchanged-line-format="" --new-line-format="%dn," --old-line-format="" ' . $this->_file.'.before' . ' ' . $this->_file.'.after', $result);
-      
-      if(!empty($result[0])){
-        $lines = $result[0]."0";
-        // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
-        $values = $this->phpcs->cli->getCommandLineValues();
-        $standards = implode(",",$values['standard']);
-//        file_put_contents($this->_file.'.after', $origin);
-        if(!$deep = getenv('DEEP2')){
-          exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout, $return_val);
-        }
-        //file_put_contents($this->_file, $origin);
-        exec('diff -u ' . $this->_file . '.before ' . $this->_file  . '.after', $result);
-        $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
-        $this->_stack[count($this->_stack) - 1]['debug'][] = array( 'lines' => $lines, 'output' =>  $outout, 'diff' => $result, 'return_val' => $return_val, 'before' => sha1($old_content), 'after' => sha1($new_content));
-      }
+      exec('diff -u ' . $this->_file . '.before ' . $this->_file  . '.after', $result);
+      $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
       
       unlink($this->_file.'.before');
       unlink($this->_file.'.after');      
@@ -1542,7 +1510,6 @@ class PHP_CodeSniffer_File
      */
     public static function tokenizeString($string, $tokenizer, $eolChar='\n', $tabWidth=null, $encoding=null)
     {
-        $startTime = microtime(true);
         // Minified files often have a very large number of characters per line
         // and cause issues when tokenizing.
         if (get_class($tokenizer) !== 'PHP_CodeSniffer_Tokenizers_PHP') {
@@ -1554,45 +1521,30 @@ class PHP_CodeSniffer_File
             }
         }
         
-        $dir = getcwd(). "/.cache/" ;
-        echo "DIR: ". $dir. "\n";
-        if(!is_dir($dir)){
-          mkdir($dir, 0750, TRUE);
-        }
-        $sha1 = sha1($string);
-        $file = $dir . '/' . $sha1;
-        
-        if( is_file($file) ){
-          echo "USE cache\n";
-          $cache = file_get_contents($file);
-          $tokens = unserialize($cache);
-          
-        }else{
-          $tokens = $tokenizer->tokenizeString($string, $eolChar);
+        $tokens = $tokenizer->tokenizeString($string, $eolChar);
 
-          if ($tabWidth === null) {
-              $tabWidth = PHP_CODESNIFFER_TAB_WIDTH;
-          }
-  
-          if ($encoding === null) {
-              $encoding = PHP_CODESNIFFER_ENCODING;
-          }
-  
-          echo "Tokens in ".(microtime(true) - $startTime)." microsec".PHP_EOL;
-  
-          self::_createPositionMap($tokens, $tokenizer, $eolChar, $encoding, $tabWidth);
-          self::_createTokenMap($tokens, $tokenizer, $eolChar);
-          self::_createParenthesisNestingMap($tokens, $tokenizer, $eolChar);
-          self::_createScopeMap($tokens, $tokenizer, $eolChar);
-  
-          self::_createLevelMap($tokens, $tokenizer, $eolChar);
-  
-          // Allow the tokenizer to do additional processing if required.
-          $tokenizer->processAdditional($tokens, $eolChar);
-          
-          file_put_contents($file, serialize($tokens));
+        if ($tabWidth === null) {
+            $tabWidth = PHP_CODESNIFFER_TAB_WIDTH;
         }
-        echo "DONE in ".(microtime(true) - $startTime)." microsec".PHP_EOL;
+
+        if ($encoding === null) {
+            $encoding = PHP_CODESNIFFER_ENCODING;
+        }
+
+        echo "Tokens in ".(microtime(true) - $startTime)." microsec".PHP_EOL;
+
+        self::_createPositionMap($tokens, $tokenizer, $eolChar, $encoding, $tabWidth);
+        self::_createTokenMap($tokens, $tokenizer, $eolChar);
+        self::_createParenthesisNestingMap($tokens, $tokenizer, $eolChar);
+        self::_createScopeMap($tokens, $tokenizer, $eolChar);
+
+        self::_createLevelMap($tokens, $tokenizer, $eolChar);
+
+        // Allow the tokenizer to do additional processing if required.
+        $tokenizer->processAdditional($tokens, $eolChar);
+        
+        file_put_contents($file, serialize($tokens));
+
         return $tokens;
 
     }//end tokenizeString()

@@ -168,7 +168,7 @@ class PHP_CodeSniffer_Fixer
         while ($this->loops < 50) {
             ob_start();
             if($this->loops > 0){
-              putenv("DEEP=TRUE");
+              putenv("NODIFF=TRUE");
             }
             // Only needed once file content has changed.
             $contents = $this->getContents();
