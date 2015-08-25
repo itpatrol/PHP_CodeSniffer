@@ -1457,15 +1457,15 @@ class PHP_CodeSniffer_File
         // Call phpcbf with the same standard and changed file. SHA=0000000 to get changes for changed lines
         $values = $this->phpcs->cli->getCommandLineValues();
         $standards = implode(",",$values['standard']);
-        exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file, $outout);
+        exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout);
         print_r($outout); 
-        exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file, $result);
+        exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file  . '.after', $result);
         $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
       }
       file_put_contents($this->_file, $origin_content);
       
       unlink($this->_file.'.before');
-//      unlink($this->_file.'.after');      
+      unlink($this->_file.'.after');      
     }
 
     /**
