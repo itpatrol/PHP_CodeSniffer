@@ -2081,7 +2081,7 @@ class PHP_CodeSniffer
      * @return string
      */
     public static function prepareForOutput($content)
-    {   $startTime = microtime(true);
+    {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             $content = str_replace("\r", '\r', $content);
             $content = str_replace("\n", '\n', $content);
@@ -2092,9 +2092,6 @@ class PHP_CodeSniffer
             $content = str_replace("\t", "\033[30;1m\\t\033[0m", $content);
             $content = str_replace(' ', "\033[30;1m·\033[0m", $content);
         }
-        $timeTaken = (microtime(true) - $startTime);
-        echo "prepareForOutput in $timeTaken seconds".PHP_EOL;
-        ob_flush();
         return $content;
 
     }//end prepareForOutput()
