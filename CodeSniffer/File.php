@@ -1465,10 +1465,10 @@ class PHP_CodeSniffer_File
         $standards = implode(",",$values['standard']);
         file_put_contents($this->_file.'.after', $origin);
         exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout);
-        exec('diff -u ' . $this->_file.'.before' . ' ' . $this->_file  . '.after', $result);
+        file_put_contents($this->_file, $origin);
+        exec('diff -u ' . $this->_file . ' ' . $this->_file  . '.after', $result);
         $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
         $this->_stack[count($this->_stack) - 1]['debug'][] = array( 'lines' => $lines, 'output' =>  $outout, 'diff' => $result);
-        file_put_contents($this->_file, $origin);
       }
       
       unlink($this->_file.'.before');
