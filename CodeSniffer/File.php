@@ -455,7 +455,7 @@ class PHP_CodeSniffer_File
         // Reset the ignored lines because lines numbers may have changed
         // if we are fixing this file.
         self::$_ignoredLines = array();
-        $MyStartTime = microtime(true);
+
         try {
             $this->eolChar = self::detectLineEndings($this->_file, $contents);
         } catch (PHP_CodeSniffer_Exception $e) {
@@ -485,13 +485,9 @@ class PHP_CodeSniffer_File
                 $this->_file = $filename;
             }
         }
-        
+
         $this->_parse($contents);
-        $MyTimeTaken = (microtime(true) - $MyStartTime);
-        echo "PARSE in $MyTimeTaken seconds".PHP_EOL;
         $this->fixer->startFile($this);
-        $MyTimeTaken = (microtime(true) - $MyStartTime);
-        echo "StartFile in $MyTimeTaken seconds".PHP_EOL;
 
         if (PHP_CODESNIFFER_VERBOSITY > 2) {
             echo "\t*** START TOKEN PROCESSING ***".PHP_EOL;
@@ -501,9 +497,6 @@ class PHP_CodeSniffer_File
         $listeners        = $this->phpcs->getSniffs();
         $listenerIgnoreTo = array();
         $inTests          = defined('PHP_CODESNIFFER_IN_TESTS');
-
-        $MyTimeTaken = (microtime(true) - $MyStartTime);
-        echo "getSniffs in $MyTimeTaken seconds".PHP_EOL;
 
         // Foreach of the listeners that have registered to listen for this
         // token, get them to process it.
@@ -595,7 +588,6 @@ class PHP_CodeSniffer_File
                 }
 
                 $ignoreTo = $listeners[$class]->process($this, $stackPtr);
-
                 if ($ignoreTo !== null) {
                     $listenerIgnoreTo[$this->_activeListener] = $ignoreTo;
                 }
@@ -614,10 +606,7 @@ class PHP_CodeSniffer_File
 
                 $this->_activeListener = '';
             }//end foreach
-
         }//end foreach
-            $MyTimeTaken = (microtime(true) - $MyStartTime);
-            echo "Process tokens in $MyTimeTaken seconds".PHP_EOL;
 
         if ($this->_recordErrors === false) {
             $this->_errors   = array();
@@ -674,7 +663,6 @@ class PHP_CodeSniffer_File
      */
     private function _parse($contents=null)
     {
-        $MyStartTime = microtime(true);
         if ($contents === null && empty($this->_tokens) === false) {
             // File has already been parsed.
             return;
@@ -685,8 +673,6 @@ class PHP_CodeSniffer_File
         if (empty($cliValues['files']) === true) {
             $stdin = true;
         }
-        $MyTimeTaken = (microtime(true) - $MyStartTime);
-        echo "Comandline in $MyTimeTaken seconds".PHP_EOL;
 
         // Determine the tokenizer from the file extension.
         $fileParts = explode('.', $this->_file);
@@ -702,18 +688,11 @@ class PHP_CodeSniffer_File
             $tokenizerClass = 'PHP_CodeSniffer_Tokenizers_'.$this->tokenizerType;
         }
 
-        $MyTimeTaken = (microtime(true) - $MyStartTime);
-        echo "1 in $MyTimeTaken seconds".PHP_EOL;
-
         $tokenizer       = new $tokenizerClass();
         $this->tokenizer = $tokenizer;
 
-        echo "1.1 in ".(microtime(true) - $MyStartTime)." seconds".PHP_EOL;
-
         if ($contents === null) {
             $contents = file_get_contents($this->_file);
-        echo "1.2 in ".(microtime(true) - $MyStartTime)." seconds".PHP_EOL;
-
         }
 
         try {
@@ -731,8 +710,6 @@ class PHP_CodeSniffer_File
             }
 
             $this->_tokens = self::tokenizeString($contents, $tokenizer, $this->eolChar, $tabWidth, $encoding);
-        echo "1.3 in ".(microtime(true) - $MyStartTime)." seconds".PHP_EOL;
-            
         } catch (PHP_CodeSniffer_Exception $e) {
             $this->addWarning($e->getMessage(), null, 'Internal.Tokenizer.Exception');
             if (PHP_CODESNIFFER_VERBOSITY > 0 || (PHP_CODESNIFFER_CBF === true && $stdin === false)) {
@@ -744,9 +721,6 @@ class PHP_CodeSniffer_File
 
             return;
         }//end try
-
-        $MyTimeTaken = (microtime(true) - $MyStartTime);
-        echo "2 in $MyTimeTaken seconds".PHP_EOL;
 
         $this->numTokens = count($this->_tokens);
 
@@ -763,10 +737,6 @@ class PHP_CodeSniffer_File
             $error = 'File has mixed line endings; this may cause incorrect results';
             $this->addWarning($error, 0, 'Internal.LineEndings.Mixed');
         }
-        
-        $MyTimeTaken = (microtime(true) - $MyStartTime);
-        echo "3 in $MyTimeTaken seconds".PHP_EOL;
-        
 
         if (PHP_CODESNIFFER_VERBOSITY > 0 || (PHP_CODESNIFFER_CBF === true && $stdin === false)) {
             if ($this->numTokens === 0) {
