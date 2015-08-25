@@ -1464,7 +1464,9 @@ class PHP_CodeSniffer_File
         $values = $this->phpcs->cli->getCommandLineValues();
         $standards = implode(",",$values['standard']);
 //        file_put_contents($this->_file.'.after', $origin);
-        exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout, $return_val);
+        if(!$deep = getenv('DEEP2')){
+          exec('DEEP=TRUE LINES='.$lines.' phpcbf --standard=' . $standards . ' ' . $this->_file . '.after', $outout, $return_val);
+        }
         //file_put_contents($this->_file, $origin);
         exec('diff -u ' . $this->_file . '.before ' . $this->_file  . '.after', $result);
         $this->_stack[count($this->_stack) - 1]['changes'][] = $result;
