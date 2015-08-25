@@ -1014,6 +1014,13 @@ class PHP_CodeSniffer_File
             return false;
           }
         }
+        
+        if($lines  = getenv('LINES')){
+          $lines = explode(",", $lines);
+          if(!in_array($line, $lines)){
+            return false;
+          }
+        }
 
         // Work out which sniff generated the error.
         if (substr($code, 0, 9) === 'Internal.') {
