@@ -2094,6 +2094,7 @@ class PHP_CodeSniffer
         }
         $timeTaken = (microtime(true) - $startTime);
         echo "prepareForOutput in $timeTaken seconds".PHP_EOL;
+        ob_flush();
         return $content;
 
     }//end prepareForOutput()
