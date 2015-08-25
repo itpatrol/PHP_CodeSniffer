@@ -595,6 +595,9 @@ class PHP_CodeSniffer_File
                 }
 
                 $ignoreTo = $listeners[$class]->process($this, $stackPtr);
+                $MyTimeTaken = (microtime(true) - $MyStartTime);
+                echo "Process ".$this->_activeListener." in $MyTimeTaken seconds".PHP_EOL;
+
                 if ($ignoreTo !== null) {
                     $listenerIgnoreTo[$this->_activeListener] = $ignoreTo;
                 }
