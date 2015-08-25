@@ -1187,6 +1187,13 @@ class PHP_CodeSniffer_File
           }
         }
 
+        if($lines  = getenv('LINES')){
+          $lines = explode(",", $lines);
+          if(!in_array($line, $lines)){
+            return false;
+          }
+        }        
+
         // Work out which sniff generated the warning.
         if (substr($code, 0, 9) === 'Internal.') {
             // Any internal message.
