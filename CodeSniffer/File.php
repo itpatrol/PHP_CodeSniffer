@@ -1565,30 +1565,29 @@ class PHP_CodeSniffer_File
           
         }else{
           $tokens = $tokenizer->tokenizeString($string, $eolChar);
+
+          if ($tabWidth === null) {
+              $tabWidth = PHP_CODESNIFFER_TAB_WIDTH;
+          }
+  
+          if ($encoding === null) {
+              $encoding = PHP_CODESNIFFER_ENCODING;
+          }
+  
+          echo "Tokens in ".(microtime(true) - $startTime)." microsec".PHP_EOL;
+  
+          self::_createPositionMap($tokens, $tokenizer, $eolChar, $encoding, $tabWidth);
+          self::_createTokenMap($tokens, $tokenizer, $eolChar);
+          self::_createParenthesisNestingMap($tokens, $tokenizer, $eolChar);
+          self::_createScopeMap($tokens, $tokenizer, $eolChar);
+  
+          self::_createLevelMap($tokens, $tokenizer, $eolChar);
+  
+          // Allow the tokenizer to do additional processing if required.
+          $tokenizer->processAdditional($tokens, $eolChar);
+          
           file_put_contents($file, serialize($tokens));
-
         }
-
-        if ($tabWidth === null) {
-            $tabWidth = PHP_CODESNIFFER_TAB_WIDTH;
-        }
-
-        if ($encoding === null) {
-            $encoding = PHP_CODESNIFFER_ENCODING;
-        }
-
-        echo "Tokens in ".(microtime(true) - $startTime)." microsec".PHP_EOL;
-
-        self::_createPositionMap($tokens, $tokenizer, $eolChar, $encoding, $tabWidth);
-        self::_createTokenMap($tokens, $tokenizer, $eolChar);
-        self::_createParenthesisNestingMap($tokens, $tokenizer, $eolChar);
-        self::_createScopeMap($tokens, $tokenizer, $eolChar);
-
-        self::_createLevelMap($tokens, $tokenizer, $eolChar);
-
-        // Allow the tokenizer to do additional processing if required.
-        $tokenizer->processAdditional($tokens, $eolChar);
-
         echo "DONE in ".(microtime(true) - $startTime)." microsec".PHP_EOL;
         return $tokens;
 
