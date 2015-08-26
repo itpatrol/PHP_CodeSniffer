@@ -499,11 +499,6 @@ class PHP_CodeSniffer_File
         // Foreach of the listeners that have registered to listen for this
         // token, get them to process it.
         foreach ($this->_tokens as $stackPtr => $token) {
-            if(!empty($this->_process_selected_lines)){
-              if(!in_array($token['line'], $this->_process_selected_lines)){
-                continue;
-              }
-            }
             // Check for ignored lines.
             if ($token['code'] === T_COMMENT
                 || $token['code'] === T_DOC_COMMENT
