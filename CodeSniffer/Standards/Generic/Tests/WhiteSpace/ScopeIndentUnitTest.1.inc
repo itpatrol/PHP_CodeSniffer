@@ -853,6 +853,32 @@ try {
     }
 }
 
+class C0
+{
+     public function m0()
+    {
+    }
+
+    public function m1()
+    {
+    }
+}
+
+namespace Foo {
+
+    use \Foo\Bar;
+    use \Foo\Baz;
+
+    function test() {
+        return true;
+    }
+
+}
+
+declare(ticks=1) {
+echo 'foo';
+}
+
     function foo()
     {
         $foo = array(

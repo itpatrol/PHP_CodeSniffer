@@ -425,29 +425,31 @@ class Generic_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Snif
                     array_pop($openScopes);
                 }
 
-                $first = $phpcsFile->findFirstOnLine(T_WHITESPACE, $tokens[$scopeCloser]['scope_condition'], true);
+                if (isset($tokens[$scopeCloser]['scope_condition']) === true) {
+                    $first = $phpcsFile->findFirstOnLine(T_WHITESPACE, $tokens[$scopeCloser]['scope_condition'], true);
 
-                $currentIndent = ($tokens[$first]['column'] - 1);
-                if (isset($adjustments[$first]) === true) {
-                    $currentIndent += $adjustments[$first];
-                }
+                    $currentIndent = ($tokens[$first]['column'] - 1);
+                    if (isset($adjustments[$first]) === true) {
+                        $currentIndent += $adjustments[$first];
+                    }
 
-                // Make sure it is divisible by our expected indent.
-                if ($tokens[$tokens[$scopeCloser]['scope_condition']]['code'] !== T_CLOSURE) {
-                    $currentIndent = (int) (ceil($currentIndent / $this->indent) * $this->indent);
-                }
+                    // Make sure it is divisible by our expected indent.
+                    if ($tokens[$tokens[$scopeCloser]['scope_condition']]['code'] !== T_CLOSURE) {
+                        $currentIndent = (int) (ceil($currentIndent / $this->indent) * $this->indent);
+                    }
 
-                if ($this->_debug === true) {
-                    echo "\t=> indent set to $currentIndent".PHP_EOL;
-                }
+                    if ($this->_debug === true) {
+                        echo "\t=> indent set to $currentIndent".PHP_EOL;
+                    }
 
-                // We only check the indent of scope closers if they are
-                // curly braces because other constructs tend to have different rules.
-                if ($tokens[$scopeCloser]['code'] === T_CLOSE_CURLY_BRACKET) {
-                    $exact = true;
-                } else {
-                    $checkToken = null;
-                }
+                    // We only check the indent of scope closers if they are
+                    // curly braces because other constructs tend to have different rules.
+                    if ($tokens[$scopeCloser]['code'] === T_CLOSE_CURLY_BRACKET) {
+                        $exact = true;
+                    } else {
+                        $checkToken = null;
+                    }
+                }//end if
             }//end if
 
             // Handle scope for JS object notation.
@@ -593,6 +595,15 @@ class Generic_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Snif
                     }
                 }
             }//end if
+
+            // Method prefix indentation has to be exact or else if will break
+            // the rest of the function declaration, and potentially future ones.
+            if ($checkToken !== null
+                && isset(PHP_CodeSniffer_Tokens::$methodPrefixes[$tokens[$checkToken]['code']]) === true
+                && $tokens[($checkToken + 1)]['code'] !== T_DOUBLE_COLON
+            ) {
+                $exact = true;
+            }
 
             // JS property indentation has to be exact or else if will break
             // things like function and object indentation.

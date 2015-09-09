@@ -113,3 +113,24 @@ switch ($foo) {
     case 3: return 3;
     default: $bar = 0;
 }
+
+switch ($foo) {
+    case 'foo': // some comment
+        echo 'foo';
+        break;
+    case 'bar':
+        // some comment
+        echo 'bar';
+        break;
+    case 'baz': // other comment
+        echo 'baz';
+        break;
+    case 'boo':
+
+        // other comment
+        echo 'boo';
+        break;
+    default: // other comment
+        echo 'default';
+        break;
+}
