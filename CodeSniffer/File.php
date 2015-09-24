@@ -469,6 +469,9 @@ class PHP_CodeSniffer_File
             file_put_contents($this->_file, $contents);
           }
           $this->_process_selected_lines = array();
+          if(strpos(",", $reportSha)){
+            $reportSha = str_replace(",", "|", $reportSha);
+          }
           exec('git annotate -lt ' . $this->_file. "| awk -F$'\t' '{print$1\" \"$4}'|tr ')' ' '|awk '{print$1\" \"$2}' |grep -E '" . $reportSha . "|0000000000000000000000000000000000000000' |awk '{print$2}'", $this->_process_selected_lines);
         }
 
